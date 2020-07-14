@@ -2,9 +2,15 @@ import React from 'react';
 
 const QuizType = (props) => {
   return (
-    <div>
-      <i className={props.icon}></i>
-    </div>
+    <li className='col-sm-3 text-center'>
+      <div
+        className='nav-card'
+        onClick={() => props.userChoice(props.quizType)}
+      >
+        <i className={props.icon}></i>
+        <span> {props.quizType}</span>
+      </div>
+    </li>
   );
 };
 
