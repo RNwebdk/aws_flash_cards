@@ -1,10 +1,16 @@
 import React from 'react';
 
 const RandomWeighted = (props) => {
+  const question = props.questionData;
   return (
     <div>
-      <div className='card-back'>AWS Service</div>
-      <div className='card-front'>AWS Category</div>
+      <div className='card-back'>
+        <div>{question.service}</div>
+        <div className='commonality'>{question.common}</div>
+      </div>
+      <div className='card-front'>
+        <div>{question.cat}</div>
+      </div>
     </div>
   );
 };
