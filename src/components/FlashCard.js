@@ -2,13 +2,47 @@ import React, { Component } from 'react';
 import MultiCard from './MultiCard';
 import RegularCard from './RegularCard';
 import RandomWeighted from './RandomWeighted';
+import axios from 'axios';
 
 class FlashCard extends Component {
   constructor() {
     super();
+    this.apiHostRoot = `https://aws-services.robertbunch.dev/services`;
     this.state = {
       flipClass: '',
+      questionData: '',
     };
+  }
+
+  newCard = () => {
+    //fetch a new card question
+    let path;
+
+    const cardStyle = this.props.cardStyle;
+    switch (cardStyle) {
+      case 'Random':
+      case 'Regular':
+        path = this.apiHostRoot + '/all';
+        break;
+      case 'Weighted':
+        path = this.apiHostRoot + '/weighted';
+        break;
+      case 'Regular':
+        path = this.apiHostRoot + '/multi';
+        break;
+      default:
+        path = this.apiHostRoot + '/all';
+        break;
+    }
+    axios.get(path).then((response) => {
+      this.setState({
+        questionData: response.data,
+      });
+    });
+  };
+
+  componentDidMount() {
+    this.newCard();
   }
 
   flip = (e) => {
@@ -26,11 +60,14 @@ class FlashCard extends Component {
             onClick={this.flip}
             className={`col-sm-6 offset-sm-3 card mb-3 ${this.state.flipClass}`}
           >
-            <RandomWeighted />
-            {/* <RegularCard />
-            <MultiCard /> */}
+            {/* <RandomWeighted /> */}
+            <RegularCard questionData={this.state.questionData} />
+            {/* <MultiCard /> */}
           </div>
         </div>
+        <button onClick={this.newCard} className='btn btn-primary btn-lg'>
+          Next Question
+        </button>
       </div>
     );
   }
