@@ -11,6 +11,7 @@ class FlashCard extends Component {
     this.state = {
       flipClass: '',
       questionData: '',
+      ready: false,
     };
   }
 
@@ -37,12 +38,13 @@ class FlashCard extends Component {
     axios.get(path).then((response) => {
       this.setState({
         questionData: response.data,
+        ready: true,
       });
     });
   };
 
   componentDidMount() {
-    this.newCard();
+    // this.newCard();
   }
 
   flip = (e) => {
@@ -53,6 +55,15 @@ class FlashCard extends Component {
   };
 
   render() {
+    if (!this.state.ready) {
+      this.newCard();
+      return (
+        <div className='spinner-wrapper'>
+          <i className='fas fa-spinner fa-6x fa-spin'></i>
+        </div>
+      );
+    }
+
     return (
       <div>
         <div className='row align items-cener card-holder'>
